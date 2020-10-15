@@ -14,9 +14,16 @@ public class ResServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        req.setCharacterEncoding("UTF-8");
+//        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("UTF-8");
 
 //        String somethingFromForm = req.getParameter("user-string");
-        String s1 = req.getParameter("user-string");
+        String parameter = req.getParameter("user-string");
+        byte[] bytes = parameter.getBytes("ISO-8859-1");
+        String s1 = new String(bytes, "UTF-8");
+
+        System.out.println("Строка --- " + s1);
 
 
         if (isInt(s1)) { // целое число
@@ -28,9 +35,7 @@ public class ResServlet extends HttpServlet {
 
             this.getServletContext().getRequestDispatcher("/increaseNumberForm.jsp").forward(req,resp);
 
-        } else { // строка
-
-//            int blockCount = s1.split(" ").length;
+        } else {
 
             String [] strings = s1.split("[ .,;_:]");
 
@@ -54,19 +59,11 @@ public class ResServlet extends HttpServlet {
         }
 
 
-//        this.getServletContext().getRequestDispatcher("/resServlet.jsp").forward(req,resp);
+//        this.getServletContext().getRequestDispatcher("/testServlet.jsp").forward(req,resp);
 
 
     }
 
-    public static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 
     public static boolean isInt(String str) {
         try {
@@ -75,17 +72,6 @@ public class ResServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    public static boolean isInteger(double i) {
-
-        if (i % 1 == 0) {
-
-            return true;
-        } else {
-            return false;
-        }
-
     }
 }
 
